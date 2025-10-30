@@ -1,82 +1,106 @@
-# Hand Product Name Detection (MediaPipe + OpenCV + Tesseract)
+# ✋ Hand Recognition + Product Name Detection using MediaPipe, OpenCV & Tesseract
 
-follow on instagram @piyush_kadam96k
+## 📘 Overview
+This Python project detects **hands** using MediaPipe, identifies whether a product is held, and applies **OCR (Tesseract)** to extract the product name from the cropped hand region.
 
-Detects hands from a webcam feed, checks if a product is being held, and extracts a product name from the cropped hand region using OCR. Overlays detections and FPS on the video, logs events, and saves the output to a video file.
+---
 
-## ✨ Features
-- Detect hands using MediaPipe 🖐️
-- Heuristic product-in-hand check via contour area in the hand crop 📦
-- OCR with Tesseract to extract a likely product name 🔤
-- Optional camera inversion (none, horizontal, vertical, both) 🔁
-- On-screen overlays with transparency and FPS 🎛️
-- Logs to `gesture_recognition.log` 📝
-- Saves processed video to `output.mp4` 💾
+## 🚀 Features
+- 🖐️ Detects hands in real-time using **MediaPipe**
+- 📦 Detects whether a **product** is being held
+- 🔠 Extracts **product name** using Tesseract OCR
+- 🔄 Supports camera inversion (`none`, `horizontal`, `vertical`, or `both`)
+- 🎥 Overlays hand detection, product name, and **FPS counter**
+- 🪞 Transparent overlay for better visualization
+- 🧾 Logs detections to `gesture_recognition.log`
+- 💾 Saves output video to `output.mp4`
 
-## 📦 Requirements
-- Python 3.8+
-- Packages: `opencv-python`, `mediapipe`, `numpy`, `pytesseract`
-- Tesseract OCR installed on your system
+---
 
-Install Python dependencies:
+## 🧩 Dependencies
+
+Install the required libraries:
+
 ```bash
 pip install opencv-python mediapipe numpy pytesseract
 ```
 
-Install Tesseract OCR:
-- Windows (recommended builds): https://github.com/UB-Mannheim/tesseract/wiki
+Install **Tesseract OCR** (choose your OS):
+🔗 [Tesseract Installation Guide](https://github.com/UB-Mannheim/tesseract/wiki)
 
-After installing Tesseract, ensure its executable path matches what `app.py` expects:
-```python
-pytesseract.pytesseract.tesseract_cmd = r"C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
-```
-If Tesseract is installed elsewhere, update the path in `app.py` accordingly.
+---
 
-## ▶️ Usage
-From the project directory, run:
+## ⚙️ Run the Project
+
 ```bash
-python app.py --camera 0 --width 640 --height 480 --invert none
+python hand_product_name_detection.py --camera 0 --width 640 --height 480 --invert horizontal
 ```
 
-Arguments:
-- `--camera` (int): Webcam index (default: `0`) 🎥
-- `--width` (int): Frame width (default: `640`) ↔️
-- `--height` (int): Frame height (default: `480`) ↕️
-- `--invert` (str): One of `none`, `horizontal`, `vertical`, `both` (default: `none`) 🔁
+**Arguments:**
+| Argument | Type | Description |
+|-----------|------|-------------|
+| `--camera` | int | Camera index (default: 0) |
+| `--width` | int | Frame width (default: 640) |
+| `--height` | int | Frame height (default: 480) |
+| `--invert` | str | Flip camera feed (`none`, `horizontal`, `vertical`, or `both`) |
 
-🎮 Controls:
-- Press `q` to quit.
+---
 
-📤 Outputs:
-- Processed video: `output.mp4` 🎞️
-- Logs: `gesture_recognition.log` 📝
-- Display window titled: "Hand Product Name Detection" 🪟
+## 🧠 How It Works
+1. **MediaPipe Hands** detects hand landmarks in real-time.  
+2. **Contour Detection** checks if a product-like object is being held.  
+3. **Tesseract OCR** scans the cropped region and extracts readable text (product name).  
+4. The system overlays the detected product name and FPS on the video feed.  
+5. All results are saved to a log file and output video.  
 
-## ⚙️ How it Works (High Level)
-1. Captures frames from the selected camera.
-2. Detects hands with MediaPipe and draws landmarks/boxes.
-3. Crops around each detected hand, runs a contour-based heuristic to decide if a product might be present.
-4. If a product is likely, runs Tesseract OCR over the hand crop and displays the first meaningful word as the product name.
-5. Overlays results and FPS, writes frames to `output.mp4`.
+---
 
-## 🧰 Troubleshooting
-- Webcam not opening: ensure the correct `--camera` index and that no other app is using the camera.
-- Tesseract errors or empty text:
-  - Verify Tesseract is installed and the path in `app.py` is correct.
-  - Lighting/contrast strongly affects OCR quality; try better lighting or higher resolution.
-- Low FPS: reduce frame size (`--width`, `--height`) or close other CPU-intensive apps.
+## 📄 Output Files
+| File | Description |
+|------|--------------|
+| `output.mp4` | Recorded output with overlays |
+| `gesture_recognition.log` | Log file of detected products and hands |
 
-## 📁 Project Structure
+---
+
+## 💡 Example Run
 ```
-.
-├── app.py                  # Main application
-├── README.md               # This file
-├── images/                 # (Optional) Assets folder
-├── known_faces/            # (Present but unused by app.py)
-└── .venv/                  # (Optional) Virtual environment
+python hand_product_name_detection.py --camera 0 --invert horizontal
 ```
 
-## 📝 Notes
-- The product detection step is heuristic and may need tuning (e.g., contour area threshold) for your use case.
-- OCR is sensitive to motion blur and text orientation. Try holding products steady and front-facing to the camera.
+**Console Output:**
+```
+Hand: Left
+Product detected in Left hand: CocaCola
+Hand: Right
+Product detected in Right hand: Pepsi
+Application terminated.
+```
 
+---
+
+## 🛠️ Tesseract Configuration
+If Tesseract is installed in a custom path, update it in your code:
+
+```python
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+```
+
+---
+
+## 📦 Future Improvements
+- Add real-time product database lookup (e.g., via barcode/ML model)  
+- Improve OCR filtering for better product name recognition  
+- Implement multiple camera stream support  
+- Add voice output for detected product names  
+
+---
+
+## 🧰 Author
+Created by **Amit Kadam**  
+📧 Email: kadamamit462@gmail.com  
+📍 Location: Bhalki, India
+
+---
+
+### 🏁 Enjoy coding your AI-powered hand & product recognition system! ✨
